@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="colorPrimary">#3F51B5</color>
+    <color name="colorPrimaryDark">#303F9F</color>
+    <color name="colorAccent">#FF4081</color>
+
+    <color name="baseTheme">#3AA4F7</color>
+
+    <color name="transparent">#00000000</color>
+    <color name="translucent">#7FFFFFFF</color>
+    <color name="white">#FFFFFF</color>
+    <color name="orange">#FF7826</color>
+    <color name="green">#51d367</color>
+    <color name="background">#EEF1F8</color>
+    <color name="note">#A9A9A9</color>
+    <color name="text">#696969</color>
+    <color name="title">#333333</color>
+    <color name="stroke">#E1E1E1</color>
+    <color name="divider">#EEEEEE</color>
+    <color name="disable">#C7C7C7</color>
+    <color name="logo_stroke">#F9B90E</color>
+    <color name="button">#0291FF</color>
+    <color name="gray_blue">#94A4C0</color>
+    <color name="toast">#901B1B1B</color>
+    <color name="coupon_exchange_color">#40A7F7</color>
+</resources>

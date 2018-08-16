@@ -40,6 +40,7 @@ public class App extends Application {
     // 创建服务用于捕获崩溃异常
     private Thread.UncaughtExceptionHandler restartHandler = new Thread.UncaughtExceptionHandler() {
         public void uncaughtException(Thread thread, Throwable ex) {
+            ex.printStackTrace();
             restartApp();//发生崩溃异常时,重启应用
         }
     };

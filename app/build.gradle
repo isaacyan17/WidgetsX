@@ -1,7 +1,13 @@
 apply plugin: 'com.android.application'
 
+
 android {
     compileSdkVersion 28
+
+    /**禁止Gradle检查PNG的合法性，不然.9文件会报错*/
+    aaptOptions.cruncherEnabled = false
+    aaptOptions.useNewCruncher = false
+
     defaultConfig {
         applicationId "com.jinq.widgetsx"
         minSdkVersion 18
@@ -10,7 +16,7 @@ android {
         versionName "1.0"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
         ndk {
-            abiFilters "armeabi", "armeabi-v7a", "arm64-v8a", "x86","arm64-v8a","x86_64"
+            abiFilters "armeabi", "armeabi-v7a", "arm64-v8a", "x86","arm64-v8a", "x86_64", 'mips'
         }
         multiDexEnabled true
     }
@@ -20,11 +26,19 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
     }
+    compileOptions {
+        targetCompatibility 1.8
+        sourceCompatibility 1.8
+    }
+    dexOptions {
+        javaMaxHeapSize "4g"
+    }
 }
 
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
-    implementation 'com.android.support:appcompat-v7:28.0.0-alpha3'
+    implementation 'com.android.support:appcompat-v7:28.+'
+    implementation 'com.android.support:design:28.+'
     implementation 'com.android.support.constraint:constraint-layout:1.1.2'
     testImplementation 'junit:junit:4.12'
     androidTestImplementation 'com.android.support.test:runner:1.0.2'
@@ -42,4 +56,14 @@ dependencies {
     implementation 'io.reactivex.rxjava2:rxandroid:2.0.1'
     implementation 'io.reactivex.rxjava2:rxjava:2.1.5'
     implementation 'com.google.code.gson:gson:2.8.2'
+    implementation 'com.ashokvarma.android:bottom-navigation-bar:2.0.4'
+    //recycler
+    api 'com.github.Aspsine:SwipeToLoadLayout:v1.0.4'
+    api 'com.android.support:recyclerview-v7:28.+'
+    //eventbus
+    api 'org.greenrobot:eventbus:3.0.0'
+    //server
+    api 'com.koushikdutta.async:androidasync:2.+'
+    //运行时权限
+    implementation 'pub.devrel:easypermissions:1.1.0'
 }

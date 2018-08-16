@@ -1,4 +1,4 @@
-package com.jinq.widgetsx.presenter;
+package com.jinq.widgetsx.base;
 
 public interface BasePresenter {
 

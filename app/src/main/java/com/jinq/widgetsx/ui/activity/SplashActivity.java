@@ -5,10 +5,9 @@ import android.os.Bundle;
 import android.webkit.JavascriptInterface;
 import android.webkit.WebView;
 
-import com.jinq.widgetsx.MainActivity;
 import com.jinq.widgetsx.R;
 import com.jinq.widgetsx.base.BaseActivity;
-import com.jinq.widgetsx.presenter.BasePresenter;
+import com.jinq.widgetsx.base.BasePresenter;
 import com.jinq.widgetsx.util.PrefUtil;
 
 import butterknife.BindView;
@@ -59,16 +58,19 @@ public class SplashActivity extends BaseActivity{
         @JavascriptInterface
         public void jumpMainActivity() {
             boolean loginState = PrefUtil.getLoginState(context);
-            if(!loginState) {
+            Intent intent = new Intent(context, MainActivity.class);
+            startActivity(intent);
+            finish();
+//            if(!loginState) {
 //                Intent intent = new Intent(context, LoginActivity.class);
 //                startActivity(intent);
 //                //TODO transition
 //                finish();
-            }else{
-                Intent intent = new Intent(context, MainActivity.class);
-                startActivity(intent);
-                finish();
-            }
+//            }else{
+//                Intent intent = new Intent(context, MainActivity.class);
+//                startActivity(intent);
+//                finish();
+//            }
         }
     }
 }

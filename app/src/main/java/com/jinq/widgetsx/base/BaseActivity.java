@@ -13,7 +13,6 @@ import android.view.WindowManager;
 
 import com.jinq.widgetsx.R;
 import com.jinq.widgetsx.application.App;
-import com.jinq.widgetsx.presenter.BasePresenter;
 import com.jinq.widgetsx.util.LightStatusBarUtil;
 import com.jinq.widgetsx.util.RomUtil;
 

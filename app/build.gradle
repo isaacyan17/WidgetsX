@@ -66,4 +66,6 @@ dependencies {
     api 'com.koushikdutta.async:androidasync:2.+'
     //运行时权限
     implementation 'pub.devrel:easypermissions:1.1.0'
+    //glide
+    implementation 'com.github.bumptech.glide:glide:3.7.0'
 }

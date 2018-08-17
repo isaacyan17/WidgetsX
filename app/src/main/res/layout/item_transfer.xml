@@ -5,6 +5,8 @@
     android:layout_height="wrap_content"
     android:padding="15dp"
     android:layout_marginTop="10dp"
+    android:layout_marginLeft="10dp"
+    android:layout_marginRight="10dp"
     android:background="@drawable/white_stroke_bg">
 
     <ImageView
@@ -34,7 +36,7 @@
         android:text="---"
         android:textColor="@color/title"
         android:textSize="@dimen/h_text_size"
-        app:layout_constraintWidth_percent="0.35"
+        app:layout_constraintWidth_percent="0.8"
         app:layout_constraintLeft_toRightOf="@id/icon"
         app:layout_constraintTop_toBottomOf="@id/fileName" />
 
@@ -56,6 +58,7 @@
         android:gravity="center"
         android:text="@string/transfer_install"
         android:textColor="@color/white"
+        app:layout_constraintTop_toBottomOf="@id/filePath"
         app:layout_constraintRight_toLeftOf="@+id/fileUninstall"
         app:layout_constraintBottom_toBottomOf="parent" />
 
@@ -68,6 +71,7 @@
         android:gravity="center"
         android:text="@string/transfer_uninstall"
         android:textColor="@color/white"
+        app:layout_constraintTop_toBottomOf="@id/filePath"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintBottom_toBottomOf="parent"/>
 

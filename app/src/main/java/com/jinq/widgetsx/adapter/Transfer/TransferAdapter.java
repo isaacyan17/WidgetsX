@@ -25,7 +25,7 @@ public class TransferAdapter extends RecyclerView.Adapter<TransferAdapter.ViewHo
     private List<TransferModelBean> mList = new ArrayList<>();
     private Context mContext;
 
-    //    private setOnItemClickListener mListener;
+    private onButtonClickListener mListener;
 
     public TransferAdapter(Context context) {
         this.mContext = context;
@@ -48,6 +48,10 @@ public class TransferAdapter extends RecyclerView.Adapter<TransferAdapter.ViewHo
         notifyDataSetChanged();
     }
 
+    public void setOnButtonClickListener(onButtonClickListener listener) {
+        this.mListener = listener;
+    }
+
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_transfer, parent, false);
@@ -59,6 +63,26 @@ public class TransferAdapter extends RecyclerView.Adapter<TransferAdapter.ViewHo
         TransferModelBean transferModelBean = mList.get(position);
         if (transferModelBean.getIcon() != null) {
             holder.mIcon.setImageDrawable(transferModelBean.getIcon());
+        } else {
+            switch (transferModelBean.getFiletype()) {
+                case TXT:
+                    holder.mIcon.setImageDrawable(mContext.getResources().getDrawable(R.drawable.icon_txt));
+                    break;
+                case DOC:
+                    holder.mIcon.setImageDrawable(mContext.getResources().getDrawable(R.drawable.icon_doc));
+                    break;
+                case MP3:
+                    holder.mIcon.setImageDrawable(mContext.getResources().getDrawable(R.drawable.icon_mp3));
+                    break;
+                case PNG:
+                case JPG:
+                    holder.mIcon.setImageDrawable(mContext.getResources().getDrawable(R.drawable.icon_img));
+                    break;
+                case OTHER:
+                    break;
+                default:
+                    break;
+            }
         }
         if (!StringUtil.isEmpty(transferModelBean.getName())) {
             holder.mFileName.setText(transferModelBean.getName());
@@ -66,9 +90,36 @@ public class TransferAdapter extends RecyclerView.Adapter<TransferAdapter.ViewHo
         if (!StringUtil.isEmpty(transferModelBean.getPath())) {
             holder.mFilePath.setText(transferModelBean.getPath());
         }
-        if(!StringUtil.isEmpty(transferModelBean.getSize())){
+        if (!StringUtil.isEmpty(transferModelBean.getSize())) {
             holder.mFileSize.setText(transferModelBean.getSize());
         }
+        if (transferModelBean.getFiletype() == TransferModelBean.FILETYPE.APK) {
+            holder.mFileUninstall.setVisibility(View.VISIBLE);
+            holder.mFileInstall.setText(mContext.getResources().getString(R.string.transfer_install));
+        } else {
+            holder.mFileUninstall.setVisibility(View.GONE);
+            holder.mFileInstall.setText(mContext.getResources().getString(R.string.transfer_open));
+        }
+
+        holder.mFileInstall.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if (transferModelBean.getFiletype() == TransferModelBean.FILETYPE.APK && mListener != null) {
+                    mListener.onInstallClick(transferModelBean);
+                } else if (mListener != null) {
+                    mListener.onFileOpenClick(transferModelBean);
+                }
+            }
+        });
+        holder.mFileUninstall.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if (mListener != null) {
+                    mListener.onUninstallClick(transferModelBean);
+                }
+            }
+        });
+
     }
 
     @Override
@@ -96,5 +147,13 @@ public class TransferAdapter extends RecyclerView.Adapter<TransferAdapter.ViewHo
             super(itemView);
             ButterKnife.bind(this, itemView);
         }
+    }
+
+    public interface onButtonClickListener {
+        void onInstallClick(TransferModelBean transferModelBean);
+
+        void onUninstallClick(TransferModelBean transferModelBean);
+
+        void onFileOpenClick(TransferModelBean transferModelBean);
     }
 }

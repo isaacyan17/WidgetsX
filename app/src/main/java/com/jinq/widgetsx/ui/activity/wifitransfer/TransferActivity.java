@@ -150,21 +150,36 @@ public class TransferActivity extends BaseActivity implements OnRefreshListener,
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(self, LinearLayoutManager.VERTICAL, false);
         swipeTarget.setLayoutManager(layoutManager);
 
-//        swipeTarget.setHasFixedSize(true);
-//        swipeTarget.setNestedScrollingEnabled(false);
+        swipeTarget.setHasFixedSize(true);
+        swipeTarget.setNestedScrollingEnabled(false);
         mAdapter = new TransferAdapter(self);
-        swipeTarget.setAdapter(mAdapter);
-//        swipeTarget.setOnScrollListener(new RecyclerView.OnScrollListener() {
-//            @Override
-//            public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
-//                if (newState == RecyclerView.SCROLL_STATE_IDLE) {
-//                    if (!ViewCompat.canScrollVertically(recyclerView, 1)) {
-//                        swipeToLoadLayout.setLoadingMore(true);
-//                    }
-//                }
-//            }
-//        });
+        mAdapter.setOnButtonClickListener(new TransferAdapter.onButtonClickListener() {
+            @Override
+            public void onInstallClick(TransferModelBean transferModelBean) {
+                installApkFile(TransferActivity.this, new File(transferModelBean.getPath()));
+            }
 
+            @Override
+            public void onUninstallClick(TransferModelBean transferModelBean) {
+                delete(TransferActivity.this, transferModelBean.getPackageName());
+            }
+
+            @Override
+            public void onFileOpenClick(TransferModelBean transferModelBean) {
+                //TODO
+            }
+        });
+        swipeTarget.setAdapter(mAdapter);
+        swipeTarget.setOnScrollListener(new RecyclerView.OnScrollListener() {
+            @Override
+            public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
+                if (newState == RecyclerView.SCROLL_STATE_IDLE) {
+                    if (!ViewCompat.canScrollVertically(recyclerView, 1)) {
+                        swipeToLoadLayout.setLoadingMore(true);
+                    }
+                }
+            }
+        });
     }
 
     private void initSwipeToLoadLayout() {
@@ -201,6 +216,7 @@ public class TransferActivity extends BaseActivity implements OnRefreshListener,
             infoModel.setSize(getFileSize(length));
             infoModel.setVersion(version);
             infoModel.setIcon(icon);
+            infoModel.setFiletype(TransferModelBean.FILETYPE.APK);
             infoModel.setInstalled(isAvilible(this, packageName));
             if (list == null)
                 mApps.add(infoModel);
@@ -338,6 +354,7 @@ public class TransferActivity extends BaseActivity implements OnRefreshListener,
     @Override
     public void onRefresh() {
         checkFileList();
+        swipeToLoadLayout.setRefreshing(true);
     }
 
     @Override
@@ -376,7 +393,12 @@ public class TransferActivity extends BaseActivity implements OnRefreshListener,
             File[] fileNames = dir.listFiles();
             if (fileNames != null) {
                 for (File fileName : fileNames) {
-                    handleApk(fileName.getAbsolutePath(), fileName.length(), mApps);
+                    if(fileName.getAbsolutePath().endsWith(".apk")) {
+                        handleApk(fileName.getAbsolutePath(), fileName.length(), mApps);
+                    }else{
+                        //非APK类型的文件，检索出list bean类型的数据
+                        handleOtherFiles(fileName,fileName.length(), mApps);
+                    }
                 }
             }
         }
@@ -389,6 +411,30 @@ public class TransferActivity extends BaseActivity implements OnRefreshListener,
             mNullLy.setVisibility(View.VISIBLE);
             swipeTarget.setVisibility(View.GONE);
         }
+
+    }
+
+    private void handleOtherFiles(File file,long length, List<TransferModelBean> list){
+        TransferModelBean infoModel = new TransferModelBean();
+        infoModel.setPath(file.getAbsolutePath());
+        infoModel.setName(file.getName());
+        infoModel.setSize(getFileSize(length));
+        TransferModelBean.FILETYPE type ;
+        if(file.getAbsolutePath().endsWith(".png")){
+            type = TransferModelBean.FILETYPE.PNG;
+        }else if(file.getAbsolutePath().endsWith(".jpg")){
+            type = TransferModelBean.FILETYPE.JPG;
+        }else if(file.getAbsolutePath().endsWith(".doc")){
+            type = TransferModelBean.FILETYPE.DOC;
+        }else if(file.getAbsolutePath().endsWith(".txt")){
+            type = TransferModelBean.FILETYPE.TXT;
+        }else if(file.getAbsolutePath().endsWith(".mp3")){
+            type = TransferModelBean.FILETYPE.MP3;
+        }else {
+            type = TransferModelBean.FILETYPE.OTHER;
+        }
+        infoModel.setFiletype(type);
+        list.add(infoModel);
 
     }
 

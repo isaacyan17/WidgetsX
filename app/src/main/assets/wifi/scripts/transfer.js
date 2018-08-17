@@ -159,7 +159,8 @@ $(function() {
 	}
 	
 	function checkFileName(fileName) {
-		if (!fileName || !fileName.toLowerCase().match('(apk)$')) {
+	//delete match string->    || !fileName.toLowerCase().match('(apk)$')
+		if (!fileName) {
 			return STRINGS.UNSUPPORTED_FILE_TYPE;
 		}
 		

@@ -38,8 +38,8 @@ import java.net.URLEncoder;
 import java.text.DecimalFormat;
 
 public class WebService extends Service {
-    static final String ACTION_START_WEB_SERVICE = "com.baidusoso.wifitransfer.action.START_WEB_SERVICE";
-    static final String ACTION_STOP_WEB_SERVICE = "com.baidusoso.wifitransfer.action.STOP_WEB_SERVICE";
+    static final String ACTION_START_WEB_SERVICE = "start_service";
+    static final String ACTION_STOP_WEB_SERVICE = "stop_service";
 
     private static final String TEXT_CONTENT_TYPE = "text/html;charset=utf-8";
     private static final String CSS_CONTENT_TYPE = "text/css;charset=utf-8";

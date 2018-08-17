@@ -10,6 +10,15 @@ public class TransferModelBean {
     private String packageName;
     private boolean installed;
     private Drawable icon;
+    private FILETYPE filetype;
+
+    public FILETYPE getFiletype() {
+        return filetype;
+    }
+
+    public void setFiletype(FILETYPE filetype) {
+        this.filetype = filetype;
+    }
 
     public String getPath() {
         return path;
@@ -66,4 +75,15 @@ public class TransferModelBean {
     public void setIcon(Drawable icon) {
         this.icon = icon;
     }
+
+    public enum  FILETYPE{
+        APK,
+        MP3,
+        TXT,
+        DOC,
+        PNG,
+        JPG,
+        OTHER
+    }
+
 }

@@ -1,6 +1,7 @@
 package com.jinq.widgetsx.adapter.Transfer;
 
 import android.content.Context;
+import android.net.Uri;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -10,10 +11,13 @@ import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
 import com.jinq.widgetsx.R;
 import com.jinq.widgetsx.bean.TransferBean.TransferModelBean;
+import com.jinq.widgetsx.util.FileOpenUtil;
 import com.jinq.widgetsx.util.StringUtil;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -76,7 +80,11 @@ public class TransferAdapter extends RecyclerView.Adapter<TransferAdapter.ViewHo
                     break;
                 case PNG:
                 case JPG:
-                    holder.mIcon.setImageDrawable(mContext.getResources().getDrawable(R.drawable.icon_img));
+//                    holder.mIcon.setImageDrawable(mContext.getResources().getDrawable(R.drawable.icon_img));
+                    Glide.with(mContext)
+                            .load(new File(transferModelBean.getPath()))
+                            .placeholder(R.drawable.icon_img)
+                            .into(holder.mIcon);
                     break;
                 case OTHER:
                     break;

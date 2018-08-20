@@ -40,6 +40,7 @@ import com.jinq.widgetsx.constant.AppConstant;
 import com.jinq.widgetsx.constant.transfer.TransferConstant;
 import com.jinq.widgetsx.event.TransferEvent;
 import com.jinq.widgetsx.service.WebService;
+import com.jinq.widgetsx.util.FileOpenUtil;
 import com.jinq.widgetsx.widget.PopupMenuDialog;
 
 import org.greenrobot.eventbus.EventBus;
@@ -105,7 +106,7 @@ public class TransferActivity extends BaseActivity implements OnRefreshListener,
 
     @Override
     protected void loadData() {
-
+        checkFileList();
     }
 
     @Override
@@ -136,7 +137,7 @@ public class TransferActivity extends BaseActivity implements OnRefreshListener,
      * @return
      */
     private boolean hasPermission() {
-        return EasyPermissions.hasPermissions(self, Manifest.permission.READ_EXTERNAL_STORAGE, Manifest.permission.READ_PHONE_STATE);
+        return EasyPermissions.hasPermissions(self, Manifest.permission.READ_EXTERNAL_STORAGE, Manifest.permission.WRITE_EXTERNAL_STORAGE);
     }
 
     @AfterPermissionGranted(PERMISSION_READ_AND_WRITE_EXTERNAL_STORAGE)
@@ -150,7 +151,7 @@ public class TransferActivity extends BaseActivity implements OnRefreshListener,
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(self, LinearLayoutManager.VERTICAL, false);
         swipeTarget.setLayoutManager(layoutManager);
 
-        swipeTarget.setHasFixedSize(true);
+//        swipeTarget.setHasFixedSize(true);
         swipeTarget.setNestedScrollingEnabled(false);
         mAdapter = new TransferAdapter(self);
         mAdapter.setOnButtonClickListener(new TransferAdapter.onButtonClickListener() {
@@ -166,26 +167,26 @@ public class TransferActivity extends BaseActivity implements OnRefreshListener,
 
             @Override
             public void onFileOpenClick(TransferModelBean transferModelBean) {
-                //TODO
+                startActivity(FileOpenUtil.openFile(transferModelBean.getPath(),TransferActivity.this));
             }
         });
         swipeTarget.setAdapter(mAdapter);
-        swipeTarget.setOnScrollListener(new RecyclerView.OnScrollListener() {
-            @Override
-            public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
-                if (newState == RecyclerView.SCROLL_STATE_IDLE) {
-                    if (!ViewCompat.canScrollVertically(recyclerView, 1)) {
-                        swipeToLoadLayout.setLoadingMore(true);
-                    }
-                }
-            }
-        });
+//        swipeTarget.setOnScrollListener(new RecyclerView.OnScrollListener() {
+//            @Override
+//            public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
+//                if (newState == RecyclerView.SCROLL_STATE_IDLE) {
+//                    if (!ViewCompat.canScrollVertically(recyclerView, 1)) {
+//                        swipeToLoadLayout.setLoadingMore(true);
+//                    }
+//                }
+//            }
+//        });
     }
 
     private void initSwipeToLoadLayout() {
         swipeToLoadLayout.setOnRefreshListener(this);
         swipeToLoadLayout.setOnLoadMoreListener(this);
-        swipeToLoadLayout.setLoadMoreEnabled(false);
+//        swipeToLoadLayout.setLoadMoreEnabled(false);
     }
 
     //获取apk信息
@@ -293,7 +294,7 @@ public class TransferActivity extends BaseActivity implements OnRefreshListener,
      * 判断相对应的APP是否存在
      *
      * @param context
-     * @param packageName(包名)(若想判断QQ，则改为com.tencent.mobileqq，若想判断微信，则改为com.tencent.mm)
+     * @param packageName(包名)(若想判断QQ,则改为com.tencent.mobileqq,若想判断微信,则改为com.tencent.mm)
      * @return
      */
     public boolean isAvilible(Context context, String packageName) {
@@ -359,7 +360,7 @@ public class TransferActivity extends BaseActivity implements OnRefreshListener,
 
     @Override
     public void onLoadMore() {
-
+        swipeToLoadLayout.setLoadingMore(false);
     }
 
     @Override

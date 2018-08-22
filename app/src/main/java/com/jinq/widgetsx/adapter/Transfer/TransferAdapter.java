@@ -2,6 +2,7 @@ package com.jinq.widgetsx.adapter.Transfer;
 
 import android.content.Context;
 import android.net.Uri;
+import android.support.constraint.ConstraintLayout;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -128,6 +129,17 @@ public class TransferAdapter extends RecyclerView.Adapter<TransferAdapter.ViewHo
             }
         });
 
+        holder.mItemCl.setOnLongClickListener(new View.OnLongClickListener() {
+            @Override
+            public boolean onLongClick(View view) {
+                if(mListener != null){
+                    mListener.onLongClick(transferModelBean);
+                }
+                return true;
+            }
+        });
+
+
     }
 
     @Override
@@ -149,6 +161,8 @@ public class TransferAdapter extends RecyclerView.Adapter<TransferAdapter.ViewHo
         TextView mFileInstall;
         @BindView(R.id.fileUninstall)
         TextView mFileUninstall;
+        @BindView(R.id.itemCl)
+        ConstraintLayout mItemCl;
 
 
         public ViewHolder(View itemView) {
@@ -163,5 +177,7 @@ public class TransferAdapter extends RecyclerView.Adapter<TransferAdapter.ViewHo
         void onUninstallClick(TransferModelBean transferModelBean);
 
         void onFileOpenClick(TransferModelBean transferModelBean);
+
+        void onLongClick(TransferModelBean transferModelBean);
     }
 }

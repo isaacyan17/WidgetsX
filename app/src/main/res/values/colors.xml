@@ -23,4 +23,5 @@
     <color name="gray_blue">#94A4C0</color>
     <color name="toast">#901B1B1B</color>
     <color name="coupon_exchange_color">#40A7F7</color>
+    <color name="dividerLine">#F1F1F1</color>
 </resources>

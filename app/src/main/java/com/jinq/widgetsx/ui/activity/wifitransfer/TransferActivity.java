@@ -40,6 +40,7 @@ import com.jinq.widgetsx.constant.AppConstant;
 import com.jinq.widgetsx.constant.transfer.TransferConstant;
 import com.jinq.widgetsx.event.TransferEvent;
 import com.jinq.widgetsx.service.WebService;
+import com.jinq.widgetsx.ui.dialog.AlertDialog;
 import com.jinq.widgetsx.util.FileOpenUtil;
 import com.jinq.widgetsx.widget.PopupMenuDialog;
 
@@ -168,6 +169,11 @@ public class TransferActivity extends BaseActivity implements OnRefreshListener,
             @Override
             public void onFileOpenClick(TransferModelBean transferModelBean) {
                 startActivity(FileOpenUtil.openFile(transferModelBean.getPath(),TransferActivity.this));
+            }
+
+            @Override
+            public void onLongClick(TransferModelBean transferModelBean) {
+                showDialog(transferModelBean);
             }
         });
         swipeTarget.setAdapter(mAdapter);
@@ -349,6 +355,33 @@ public class TransferActivity extends BaseActivity implements OnRefreshListener,
         event.setType(TransferConstant.RxBusEventType.LOAD_BOOK_LIST);
         event.setIntState(0);
         EventBus.getDefault().post(event);
+    }
+
+    private void deleteFiles(String path){
+        File file = new File(path);
+        if (file.exists() && file.isFile()) {
+            file.delete();
+        }
+        TransferEvent event = new TransferEvent();
+        event.setType(TransferConstant.RxBusEventType.LOAD_BOOK_LIST);
+        event.setIntState(0);
+        EventBus.getDefault().post(event);
+    }
+
+    public void showDialog(TransferModelBean bean){
+        AlertDialog dialog = new AlertDialog(this, new AlertDialog.ButtonClickListener() {
+            @Override
+            public void onCancel() {
+
+            }
+
+            @Override
+            public void onConfirm() {
+                deleteFiles(bean.getPath());
+            }
+        });
+        dialog.setContentText(getResources().getString(R.string.dialog_content_confirm,bean.getName()));
+        dialog.show();
     }
 
 

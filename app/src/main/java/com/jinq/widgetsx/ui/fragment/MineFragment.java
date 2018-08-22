@@ -10,7 +10,7 @@ import com.jinq.widgetsx.base.BasePresenter;
 public class MineFragment extends BaseFragment{
     @Override
     protected int getLayoutId() {
-        return R.layout.fragment_home;
+        return R.layout.fragment_mine;
     }
 
     @Override
